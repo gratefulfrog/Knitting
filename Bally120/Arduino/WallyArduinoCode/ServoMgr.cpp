@@ -57,7 +57,6 @@ void ServoMgr::toggle (int servoIndex){
 }      
 
 void ServoMgr::set (int servoIndex, bool in){
-  //Serial.println("Set: " + String(servoIndex) + " to: " + String(in));
   int stateIndex = in ? 0 : 1;
   
   servoVec[servoIndex]->write(inOutVec[stateIndex][servoIndex]);

@@ -11,8 +11,6 @@ Wally Arduino Code - We'll see if it ever works!è
 #include "MotorMgr.h"
 #include "ServoMgr.h"
 
-Servo *s;
-
 ConnectionMgr     *cm;
 CommunicationMgr  *coms;
 KnitControl       *kc;

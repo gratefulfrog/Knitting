@@ -6,7 +6,6 @@
 #define COMMUNICATIONMGR_H
 
 #include <Arduino.h>
-//#include "Application.h"
 
 class CommunicationMgr {
   private:

@@ -6,7 +6,6 @@
 #define KNITCONTROL_H
 
 #include <Arduino.h>
-//#include "Application.h"
 #include "MotorMgr.h"
 #include "ServoMgr.h"
 

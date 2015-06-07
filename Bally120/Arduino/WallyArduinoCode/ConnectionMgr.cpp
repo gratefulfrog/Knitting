@@ -3,7 +3,6 @@
  */
  
 #include "ConnectionMgr.h"
-//#include "Application.h"
 
 ConnectionMgr::ConnectionMgr(){
   // create an instance

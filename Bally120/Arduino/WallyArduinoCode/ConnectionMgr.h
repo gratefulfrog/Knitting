@@ -6,7 +6,6 @@
 #define CONNECTIONMGR_H
 
 #include <Arduino.h>
-//#include "Application.h"
 
 #define CONNECT_CHAR ('&')
 #define BAUD_RATE (9600)

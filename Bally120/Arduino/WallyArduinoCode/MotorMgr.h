@@ -6,7 +6,6 @@
 #define MOTORMGR_H
 
 #include <Arduino.h>
-//#include "Application.h"
 #include "Config.h"
 
 #define DIRDELAY (100)

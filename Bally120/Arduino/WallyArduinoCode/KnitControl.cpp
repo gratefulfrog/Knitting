@@ -3,7 +3,6 @@
  */
 
 #include "KnitControl.h"
-//#include "Application.h"
 
 const int KnitControl::movementVect[] = {54,54,53,54};  
 
