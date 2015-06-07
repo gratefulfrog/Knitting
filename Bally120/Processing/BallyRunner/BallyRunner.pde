@@ -190,8 +190,6 @@ void initKnitSequence(){
   else{
     myPort.write('z');  // zero the servos
     daly(commandDelay);
-    myPort.write('b');  // toggle the back servos IN, since there will be a toggle at the knitRow command!
-    daly(commandDelay);
     myPort.write('t');  // toggle the TOP servo IN!
     daly(commandDelay);
     if (!rightEnd){
@@ -199,6 +197,8 @@ void initKnitSequence(){
       goToEnd();
       rightEnd = true;
     }
+    myPort.write('b');  // toggle the back servos IN, since there will be a toggle at the knitRow command!
+    daly(commandDelay);
     automatedKnittingInitialized  = true;
   }
 }
