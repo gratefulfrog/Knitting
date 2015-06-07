@@ -8,8 +8,8 @@
 #include <Arduino.h>
 #include "Config.h"
 
-#define DIRDELAY (100)
-#define STEPDELAY (1000)
+#define DIRDELAY (100)     # miliseconds
+#define STEPDELAY (1000)   #microseconds
 
 class MotorMgr {
 
