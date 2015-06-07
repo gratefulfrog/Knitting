@@ -253,7 +253,12 @@ void nStep(){
     nStepping = false;
     return;
   }
-  if (nbRowsRemaining-- > 0){
+  if (nbRowsRemaining > 0){
+    String plural = " rows ";
+    if (nbRowsRemaining==1){
+     plural =  " row ";
+    }
+    updateMesageDisplay(str(nbRowsRemaining--) + plural + "remaining...");
     atEnd= false;
     knitOneRow();
   }
