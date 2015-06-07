@@ -55,6 +55,7 @@ String KnitControl::run(char c) {
         res = "Better HOME first...";
       }
       break;
+    case 'H':
     case 'h':      // set the current position as home
       setHome();
       processed = true;
