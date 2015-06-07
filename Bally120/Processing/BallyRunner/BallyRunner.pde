@@ -1,6 +1,9 @@
 // BallyRunner.pde
 import processing.serial.*; 
 
+int nbRowsToKnit = 5;
+
+
 Serial myPort;                  // The serial port
 boolean connectionEstablished = false,
         leonardoBoard = true;
@@ -21,10 +24,14 @@ int msgX[],
 
 boolean homed= false,
         rightEnd = false,
-        automatedKnittingInitialized = false;
+        automatedKnittingInitialized = false,
+        atEnd = false,
+        nStepping = false;
+        
 char knittingDir = ' ';
 
-int commandDelay =  100;
+int commandDelay =  100,
+    nbRowsRemaining =  0;  
 
 void daly(int ms){
   // delay ms milliseconds
@@ -88,6 +95,9 @@ void draw() {
   }
   text(currentPos,posX,posY);
   text(connectTex,cX,cY);
+  if (nStepping){
+    nStep();
+  }
 }
 
 void establishConnection(){
@@ -113,6 +123,9 @@ void updateMesageDisplay(String s){
     aWords[i] = aWords[i+1];
   }
   aWords[nbMsgs-1] = s;
+  if (s.indexOf("Limit!")>0){
+    atEnd = true;
+  }
 }
 
 void processIncoming(String s){
@@ -142,11 +155,19 @@ void keyPressed() {
     else if (key == 'r' || key == 'R' || key == 'l' || key == 'L') {
       knittingDir =  key;
     }
-    if (key == 'i' || key == 'I'){
+    else if (key == 'i' || key == 'I'){
       initKnitSequence();
     }
-    if (key == 'x' || key == 'X'){
+    else if (key == 'x' || key == 'X'){
       knitOneRow();
+    }
+    else if (key == 'e' || key == 'E'){
+      nbRowsRemaining = nbRowsToKnit;
+      nStepping=true;
+    }
+    else if (key == 'a' || key == 'A'){
+      nbRowsRemaining = 0;
+      nStepping=false;
     }
   }
   else if (key == CODED) {
@@ -188,6 +209,7 @@ void setKnittingDir(char d){
   daly(commandDelay);
 }
 void goToEnd(){
+  atEnd= false;
   myPort.write('g');
   daly(commandDelay);
   if (knittingDir == 'r'){
@@ -221,3 +243,23 @@ void knitOneRow(){
    }
    goToEnd();   
 }
+
+void nStep(){
+  if (!atEnd){
+    return;
+  }
+  if (!automatedKnittingInitialized){
+    updateMesageDisplay("Please Initialize Automated Knitting first!");
+    nStepping = false;
+    return;
+  }
+  if (nbRowsRemaining-- > 0){
+    atEnd= false;
+    knitOneRow();
+  }
+  else{
+    updateMesageDisplay("Knitting complete!");
+    nStepping =  false;
+  }
+}
+  

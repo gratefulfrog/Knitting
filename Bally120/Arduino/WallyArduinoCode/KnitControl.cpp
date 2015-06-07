@@ -24,6 +24,13 @@ String KnitControl::run(char c) {
     case ' ':
       processed=true;
       break;
+    case 'a':      // toggle BACK servos
+    case 'A':
+      processed = true;
+      stepsToDo=0;
+      lastStepsToDo=0;
+      res = "Trying to ABORT!";
+      break;
     case 'b':      // toggle BACK servos
     case 'B':
       processed = true;
@@ -42,7 +49,7 @@ String KnitControl::run(char c) {
       if (homed){
         stepsToDo=-1;
         lastStepsToDo=0;
-        res = "Goiing for it!";
+        res = "Going for it!";
       }
       else{
         res = "Better HOME first...";
