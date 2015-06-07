@@ -116,6 +116,9 @@ void processIncoming(String s){
   
 void keyPressed() {
   // parse keys presses to send right stuff to Arduino
+  if (key == 'q' || key == 'Q'){
+    exit();
+  }
   String got = "Ignored!";
   if ((key >= 'A' && key <= 'Z') || 
       (key >= 'a' && key <= 'z') || 

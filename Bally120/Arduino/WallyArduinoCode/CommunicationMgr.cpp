@@ -1,6 +1,7 @@
 #include "CommunicationMgr.h"
 #include "ConnectionMgr.h"
 #include "KnitControl.h"
+//#include "Application.h"
 
 CommunicationMgr::CommunicationMgr(){
   inByte = ' ';

@@ -6,8 +6,9 @@
 #define KNITCONTROL_H
 
 #include <Arduino.h>
+//#include "Application.h"
 #include "MotorMgr.h"
-
+#include "ServoMgr.h"
 
 #define STEPS_PER_REV (200)
 #define MM_PER_REV    (32)
@@ -38,11 +39,12 @@ class KnitControl {
   private:
     int nextNbSteps();  // tells how many steps to take to go to next needle
     MotorMgr *mm;
+    ServoMgr *sm;
     
   public:
     KnitControl();
     String run(char);
-    
+    String getStatus();
     void setHome();
     void setDir(bool d);
     void moveSteps(int nbSteps);

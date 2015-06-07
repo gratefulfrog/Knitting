@@ -3,13 +3,13 @@
  */
 
 #include "KnitControl.h"
-
-
+//#include "Application.h"
 
 const int KnitControl::movementVect[] = {54,54,53,54};  
 
 KnitControl::KnitControl(){
   mm =  new MotorMgr();
+  sm = new ServoMgr();
   homed = false;
   curPos = -1;
   dir = true;
@@ -25,11 +25,24 @@ String KnitControl::run(char c) {
     case ' ':
       processed=true;
       break;
+    case 'b':      // toggle BACK servos
+    case 'B':
+      processed = true;
+      sm->setFB(false,ServoMgr::Toggle);
+      res = "Toggling BACK servos.";
+      break;
+    case 'f':      // toggle FRONT servos
+    case 'F':
+      processed = true;
+      sm->setFB(true,ServoMgr::Toggle);
+      res = "Toggling FRONT servos.";
+      break;
+    case 'G':
     case 'g':      // just go until we can go no more
       processed = true;
-      stepsToDo=-1;
-      lastStepsToDo=0;
       if (homed){
+        stepsToDo=-1;
+        lastStepsToDo=0;
         res = "Goiing for it!";
       }
       else{
@@ -45,7 +58,7 @@ String KnitControl::run(char c) {
     case 'L':     // take a step left
       processed = true;
       setDir(true);
-      res = "LEFT one step!";
+      res = "Direction:  LEFT!";
       break;
     case 'n':     // chang to needle mode, i.e. numbers entered refer to needles
     case 'N':
@@ -62,15 +75,25 @@ String KnitControl::run(char c) {
     case 'R':
       processed = true;
       setDir(false);
-      res = "RIGHT one step!";
+      res = "Direction: RIGHT!";
       break;
     case 's':     // switch tostep mode: numbers entered refer to steps
     case 'S':
       processed = true;
-      needleMode = true;
+      needleMode = false;
       res = "Step Movement Mode activited!";
       break;
-
+    case 't':      // toggle TOP servo
+    case 'T':
+      processed = true;
+      sm->toggle(ServoMgr::Top);
+      res = "Toggling TOP servo.";
+      break;
+    case 'v':      // Visualize status
+    case 'V':
+      processed = true;      
+      res = getStatus();
+      break;
   }
   if (!processed){
     if (c >= '0' && c <= '9'){
@@ -83,6 +106,17 @@ String KnitControl::run(char c) {
       }
     }
   }
+  return res;
+}
+
+String KnitControl::getStatus(){
+  String  homedS = String("H: ") + String(homed ? "T" :"F");
+  String  curPosS = String(" P: ") + String(curPos);
+  String  dirS = String(" D: ") + String(dir ? "L" : "R");
+  String  needleModeS = String(" N: ") + String(needleMode ? "T" : "F");
+  String  stepCycleIndexS = String(" C: ") + String(stepCycleIndex);
+  String  servoS = String(" S: ") + sm->getStatus();
+  String res = homedS + curPosS + dirS + needleModeS + stepCycleIndexS + servoS;
   return res;
 }
 
@@ -101,7 +135,6 @@ void KnitControl::setHome(){
 void KnitControl::setDir(bool d){
   dir = d;
   mm->dir(d);
-  stepsToDo = 1;
 }
 
 void KnitControl::moveSteps(int nbSteps){
