@@ -94,6 +94,14 @@ String KnitControl::run(char c) {
       processed = true;      
       res = getStatus();
       break;
+    case 'z':      // all servos OUT 
+    case 'Z':
+      processed = true;
+      for (int i=0;i<ServoMgr::nbServos;i++){
+        sm->set(i,false);
+      }
+      res = "Servos set to OUT.";
+      break;
   }
   if (!processed){
     if (c >= '0' && c <= '9'){

@@ -28,13 +28,13 @@ class ServoMgr {
     // 1,3 Front
     // 2,4 Back
     Servo* servoVec[5];
-    static const int nbServos = 5;
     static const int inOutVec[][5];
     
     // in is true
     bool* stateVec;
     
   public:
+    static const int nbServos = 5;
     static const int Toggle = -1,
                      In =  0,
                      Out = 1,

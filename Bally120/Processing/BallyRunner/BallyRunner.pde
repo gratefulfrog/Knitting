@@ -19,6 +19,13 @@ int msgX[],
     nbMsgs = 20,
     portDelay = 1000;
 
+boolean homed= false,
+        rightEnd = false,
+        automatedKnittingInitialized = false;
+char knittingDir = ' ';
+
+int commandDelay =  100;
+
 void daly(int ms){
   // delay ms milliseconds
   int now = millis();
@@ -101,14 +108,17 @@ void serialEvent(Serial myPort) {
   }
 }
 
-void processIncoming(String s){
-  print(s);  // to the stdout window
-  // now update the text vecs
+void updateMesageDisplay(String s){
   for (int i = 0 ; i< nbMsgs-1;i++){
     aWords[i] = aWords[i+1];
   }
   aWords[nbMsgs-1] = s;
+}
+
+void processIncoming(String s){
+  print(s);  // to the stdout window
   // check if it's a current position message and if so update the currentPos text
+  updateMesageDisplay(s);
   if (null != match(s,"Curr")) {
     currentPos = s;
   }
@@ -126,6 +136,18 @@ void keyPressed() {
     char c[] = {key, '\0'};
     got = new String(c);
     myPort.write(key);
+    if (key == 'h' || key == 'H'){
+      homed = true;
+    }
+    else if (key == 'r' || key == 'R' || key == 'l' || key == 'L') {
+      knittingDir =  key;
+    }
+    if (key == 'i' || key == 'I'){
+      initKnitSequence();
+    }
+    if (key == 'x' || key == 'X'){
+      knitOneRow();
+    }
   }
   else if (key == CODED) {
      if (keyCode == LEFT) {
@@ -137,4 +159,65 @@ void keyPressed() {
      }
   }
   println("Captured key: " + got);
+}
+
+void initKnitSequence(){
+  // check for homed, then set to left end
+  if (!homed){
+    updateMesageDisplay("Please Home first!");
+  }
+  else{
+    myPort.write('z');  // zero the servos
+    daly(commandDelay);
+    myPort.write('b');  // toggle the back servos IN, since there will be a toggle at the knitRow command!
+    daly(commandDelay);
+    myPort.write('t');  // toggle the TOP servo IN!
+    daly(commandDelay);
+    if (!rightEnd){
+      setKnittingDir('R');
+      goToEnd();
+      rightEnd = true;
+    }
+    automatedKnittingInitialized  = true;
+  }
+}
+
+void setKnittingDir(char d){
+  knittingDir = d;
+  myPort.write(d);
+  daly(commandDelay);
+}
+void goToEnd(){
+  myPort.write('g');
+  daly(commandDelay);
+  if (knittingDir == 'r'){
+    rightEnd = true;
+  }
+  else{
+    rightEnd =false;
+  }
+}
+
+void toggleKnittingServos(){
+  myPort.write('f');
+  daly(commandDelay);
+  myPort.write('b');
+  daly(commandDelay);
+}
+
+void knitOneRow(){
+  if(!automatedKnittingInitialized){
+    updateMesageDisplay("Please Initialize Automated Knitting first!");
+    return;
+  }    
+  // from current position, which is an end:
+  // servos should be set from previous row and require toggling
+  toggleKnittingServos();
+   if (rightEnd){
+     setKnittingDir('l');
+   }
+   else {
+     setKnittingDir('r');
+   }
+   goToEnd();   
 }
