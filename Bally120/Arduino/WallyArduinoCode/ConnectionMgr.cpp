@@ -11,6 +11,9 @@ ConnectionMgr::ConnectionMgr(){
   while (!Serial);
 }
 
+
+// as soon as we have read something on the port, we are connected.
+// this routine should be called until it returns TRUE.
 bool ConnectionMgr::establishConnection(){
   // try to establish a connection, return true if successful, false otherwise
   if (!connected){
