@@ -10,8 +10,8 @@
 //    row to the right, the next row will toggle the front AND back servos!
 void initKnitSequence(){
   // check for homed, then set to left end
-  if (!homed){
-    updateMesageDisplay("Please Home first!");
+  if (!homed || !awayed){
+    updateMesageDisplay("Please Home (h) and AWAY (y) first!");
   }
   else{
     myPort.write('z');  // zero the servos
@@ -65,7 +65,7 @@ void toggleKnittingServos(){
 // checks to be sure automated knitting has been initailized!
 void knitOneRow(){
   if(!automatedKnittingInitialized){
-    updateMesageDisplay("Please Initialize Automated Knitting first!");
+    updateMesageDisplay("Please Initialize Automated Knitting (i) first!");
     return;
   }    
   // from current position, which is an end:

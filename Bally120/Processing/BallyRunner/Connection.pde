@@ -4,10 +4,9 @@
 // its setup code again, then start the loop
 // For Arduino Uno's this is not necessary, but it doesn't hurt either.
 void leonardoReset(){
-  Serial tempPort = new Serial(this, "/dev/ttyACM0", 1200);
+  Serial tempPort = new Serial(this, portName, 1200);
   daly(portDelay);
   tempPort.stop();
-  println("Leonardo Reset!");
 }
 
 // The Arduino is waiting to read something on the port,

@@ -4,13 +4,13 @@
 
 #include "KnitControl.h"
 
-const int KnitControl::movementVect[] = {54,54,53,54};  
-
 KnitControl::KnitControl(){
   mm =  new MotorMgr();
   sm = new ServoMgr();
   homed = false;
-  curPos = -1;
+  awayed =false;
+  curPos =  0;
+  awayPos = maxSteps;
   dir = true;
   needleMode=false;
   stepCycleIndex = 0;
@@ -37,6 +37,16 @@ String KnitControl::run(char c) {
       sm->setFB(false,ServoMgr::Toggle);
       res = "Toggling BACK servos.";
       break;
+    case 'c':      // toggle BACK servos
+    case 'C':
+      processed = true;
+      stepsToDo=0;
+      lastStepsToDo=0;
+      homed = awayed = false;
+      curPos = 0;
+      awayPos = maxSteps;
+      res = "Settings Clearde!";
+      break;
     case 'f':      // toggle FRONT servos
     case 'F':
       processed = true;
@@ -46,17 +56,17 @@ String KnitControl::run(char c) {
     case 'G':
     case 'g':      // just go until we can go no more
       processed = true;
-      if (homed){
+      if (homed && awayed){
         stepsToDo=-1;
         lastStepsToDo=0;
         res = "Going for it!";
       }
       else{
-        res = "Better HOME first...";
+        res = "Better HOME and AWAY first...";
       }
       break;
-    case 'H':
-    case 'h':      // set the current position as home
+    case 'h':
+    case 'H':      // set the current position as home
       setHome();
       processed = true;
       res = "Homed!";
@@ -101,6 +111,17 @@ String KnitControl::run(char c) {
       processed = true;      
       res = getStatus();
       break;
+    case 'y':
+    case 'Y':      // set the current position as home
+      processed = true;
+      if(homed){
+        setAway();
+        res = "Awayed!";
+      }
+      else{
+        res = "Please Home before setting Away!";
+      }
+      break;
     case 'z':      // all servos OUT 
     case 'Z':
       processed = true;
@@ -126,24 +147,29 @@ String KnitControl::run(char c) {
 
 String KnitControl::getStatus(){
   String  homedS = String("H: ") + String(homed ? "T" :"F");
+  String  awayedS = String("A: ") + String(awayed ? String(awayPos) :"F");
   String  curPosS = String(" P: ") + String(curPos);
   String  dirS = String(" D: ") + String(dir ? "L" : "R");
   String  needleModeS = String(" N: ") + String(needleMode ? "T" : "F");
   String  stepCycleIndexS = String(" C: ") + String(stepCycleIndex);
   String  servoS = String(" S: ") + sm->getStatus();
-  String res = homedS + curPosS + dirS + needleModeS + stepCycleIndexS + servoS;
+  String res = homedS + awayedS + curPosS + dirS + needleModeS + stepCycleIndexS + servoS;
   return res;
 }
 
 int KnitControl::nextNbSteps(){
-  int ret = movementVect[stepCycleIndex];
-  stepCycleIndex  = (stepCycleIndex+1) % stepVecLen;
-  return ret;
+  return stepsPerNeedle;
 }
   
 void KnitControl::setHome(){
   homed = true;
   curPos = 0;
+  lastStepsToDo = stepsToDo = 0; 
+}
+
+void KnitControl::setAway(){
+  awayed = true;
+  awayPos = curPos;
   lastStepsToDo = stepsToDo = 0; 
 }
 
@@ -173,7 +199,7 @@ String KnitControl::incKnit(){
   else {
     lastStepsToDo = stepsToDo;
     if (dir){  // going left
-      if(curPos < maxSteps){  // it's ok to take a step!
+      if(curPos < awayPos || !awayed) { //&& curPos < maxSteps){  // it's ok to take a step!
         mm->oneStep();
         curPos++;
         stepsToDo--;
@@ -184,7 +210,7 @@ String KnitControl::incKnit(){
       }
     }
     else { // going right
-      if(curPos > 0){  // it's ok to take a step!
+      if(curPos > 0 || !homed){  // it's ok to take a step!
         mm->oneStep();
         curPos--;
         stepsToDo--;

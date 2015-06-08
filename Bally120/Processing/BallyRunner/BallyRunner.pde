@@ -15,14 +15,16 @@ boolean connectionEstablished = false,
         leonardoBoard = true;
 
 char connectChar = '&';
-String portName = "/dev/ttyACM0";
+String portName = "/dev/ttyACM1";
 int     portDelay = 1000,
-        baudRate = 9600;
+        baudRate = 9600,
+        leonardoResetDelay = 10000;
 ////////////////////
 
 //////////////////
 // Knitting globals
 boolean homed= false,
+        awayed = false,
         rightEnd = false,
         automatedKnittingInitialized = false,
         atEnd = false,
@@ -43,59 +45,50 @@ String aWords[],
        
 int msgX[], 
     msgY[],
-    posX = 300,
+    posX = 400,
     posY = 0,
-    cX = 300,
+    cX = 400,
     cY = 20,
     nbMsgs = 20;
+ 
+boolean firstPass = true;
 //////////////////
 
 void setup() {  
   size(640,480);
-  if (leonardoBoard){
-    leonardoReset();
-  }
   // set up the display
   initTextVecs(); 
- 
+
   // Create the font
   textFont(createFont("Georgia", 36));
-  textSize(14);
-  
-  // List all the available serial ports to the message window
-  // this is usefull to debug connection issues on NON LINUX machines
-  println(Serial.list());
-
-  // local variabl just for printing
-  boolean portOpen = false;
-  myPort = new Serial(this, portName, baudRate);
-  if(myPort !=null){
-    portOpen=true;
-  }
-  println("Port opened: " + portOpen);
-  // read bytes into a buffer until you get a linefeed (ASCII 10):
-  myPort.bufferUntil('\n');
+  textSize(14);  
 }
 
 void draw() {
   // this clears the display so that at each loop we have a fresh canvas
   background(0);
-  // first, connect to the arduino, or if already connected, skip
-  if (!connectionEstablished){
-    establishConnection();
+  // init post-setup
+  if (firstPass){
+    firstLoopSetup();
   }
-  // Display the text lines
-  for (int i=0 ; i<nbMsgs;i++){
-     text(aWords[i], msgX[i],msgY[i]);
-  }
-  // display the last known carriage position
-  text(currentPos,posX,posY);
-  // display connection status
-  text(connectTex,cX,cY);
-  // if automated stepping, i.e. automatically knitting rows, then take an nStep , 
-  // i.e. increment the knitting loop
-  if (nStepping){
-    nStep();
+  else{
+    // first, connect to the arduino, or if already connected, skip
+    if (!connectionEstablished){
+      establishConnection();
+    }
+    // Display the text lines
+    for (int i=0 ; i<nbMsgs;i++){
+       text(aWords[i], msgX[i],msgY[i]);
+    }
+    // display the last known carriage position
+    text(currentPos,posX,posY);
+    // display connection status
+    text(connectTex,cX,cY);
+    // if automated stepping, i.e. automatically knitting rows, then take an nStep , 
+    // i.e. increment the knitting loop
+    if (nStepping){
+      nStep();
+    }
   }
 }
 

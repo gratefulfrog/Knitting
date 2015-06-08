@@ -18,11 +18,24 @@ void keyPressed() {
     char c[] = {key, '\0'};
     got = new String(c);
     myPort.write(key);
-    if (key == 'h' || key == 'H'){
-      homed = true;
+    if (key == 'a' || key == 'A'){
+      nbRowsRemaining = 0;
+      nStepping=false;
     }
-    else if (key == 'r' || key == 'R' || key == 'l' || key == 'L') {
-      knittingDir =  key;
+    else if (key == 'c' || key == 'C'){
+      atEnd=false;
+      homed =false;
+      awayed =false;
+      rightEnd = false;
+      automatedKnittingInitialized = false;
+      nStepping = false;
+    }
+    else if (key == 'e' || key == 'E'){
+      nbRowsRemaining = nbRowsToKnit;
+      nStepping=true;
+    }
+    else if (key == 'h' || key == 'H'){
+      homed = true;
     }
     else if (key == 'i' || key == 'I'){
       initKnitSequence();
@@ -30,13 +43,13 @@ void keyPressed() {
     else if (key == 'x' || key == 'X'){
       knitOneRow();
     }
-    else if (key == 'e' || key == 'E'){
-      nbRowsRemaining = nbRowsToKnit;
-      nStepping=true;
+    else if (key == 'y' || key == 'Y'){
+      if (homed){
+        awayed = true;
+      }
     }
-    else if (key == 'a' || key == 'A'){
-      nbRowsRemaining = 0;
-      nStepping=false;
+    else if (key == 'r' || key == 'R' || key == 'l' || key == 'L') {
+      knittingDir =  key;
     }
   }
   else if (key == CODED) {

@@ -39,3 +39,29 @@ void processIncoming(String s){
   }
 }
 
+void firstLoopSetup(){
+  // List all the available serial ports to the message window
+  // this is usefull to debug connection issues on NON LINUX machines
+  println(Serial.list());
+
+  if (leonardoBoard){
+    leonardoReset();
+      println("Leonardo Reset! letting port close... " + str(leonardoResetDelay/1000) + " seconds");  
+
+    updateMesageDisplay("Leonardo Reset! letting port close...");
+    daly(leonardoResetDelay);
+    updateMesageDisplay("Termporizing done!");
+    println("Termporizing done!");
+  }
+  
+// local variabl just for printing
+  boolean portOpen = false;
+  myPort = new Serial(this, portName, baudRate);
+  if(myPort !=null){
+    portOpen=true;
+  }
+  println("Port opened: " + portOpen);
+  // read bytes into a buffer until you get a linefeed (ASCII 10):
+  myPort.bufferUntil('\n');
+  firstPass = false;
+}
