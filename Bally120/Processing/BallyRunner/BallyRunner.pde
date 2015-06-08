@@ -49,13 +49,13 @@ int msgX[],
     posY = 0,
     cX = 400,
     cY = 20,
-    nbMsgs = 20;
+    nbMsgs = 40;
  
 boolean firstPass = true;
 //////////////////
 
 void setup() {  
-  size(640,480);
+  size(640,850);
   // set up the display
   initTextVecs(); 
 
