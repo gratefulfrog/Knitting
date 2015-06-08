@@ -13,7 +13,6 @@ KnitControl::KnitControl(){
   awayPos = maxSteps;
   dir = true;
   needleMode=false;
-  stepCycleIndex = 0;
   lastStepsToDo = stepsToDo = 0;
 }
 
@@ -151,9 +150,8 @@ String KnitControl::getStatus(){
   String  curPosS = String(" P: ") + String(curPos);
   String  dirS = String(" D: ") + String(dir ? "L" : "R");
   String  needleModeS = String(" N: ") + String(needleMode ? "T" : "F");
-  String  stepCycleIndexS = String(" C: ") + String(stepCycleIndex);
   String  servoS = String(" S: ") + sm->getStatus();
-  String res = homedS + awayedS + curPosS + dirS + needleModeS + stepCycleIndexS + servoS;
+  String res = homedS + awayedS + curPosS + dirS + needleModeS + servoS;
   return res;
 }
 

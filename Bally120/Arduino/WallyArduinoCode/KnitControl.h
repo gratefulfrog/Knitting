@@ -33,7 +33,6 @@ class KnitControl {
 
     int curPos,  // number of steps we have taken since home
         awayPos,  // number of steps to left end
-        stepCycleIndex,
         stepsToDo,  // number of steps outstanding
         lastStepsToDo; // and the same one iteration ago
     static const int maxSteps =  STEPSPERNEEDLE* nbNeedles + 2, // just to be sure we don't go crazy and over run the end  

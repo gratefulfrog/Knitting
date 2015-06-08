@@ -15,7 +15,7 @@ boolean connectionEstablished = false,
         leonardoBoard = true;
 
 char connectChar = '&';
-String portName = "/dev/ttyACM1";
+String portName = "/dev/ttyACM0v";
 int     portDelay = 1000,
         baudRate = 9600,
         leonardoResetDelay = 10000;
