@@ -1,7 +1,6 @@
 /*
-Wally Arduino Code - We'll see if it ever works!è
+Wally Arduino Code - We'll see if it ever works!
  */
-//#include "Application.h"
 #include <Arduino.h>
 #include <Servo.h>
 #include "CommunicationMgr.h"
