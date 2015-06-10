@@ -12,7 +12,7 @@
 #define DIRDELAY (100)
 
 // microseconds
-#define STEPDELAY (1000)
+#define STEPDELAY (800) //(1000)
 
 class MotorMgr {
 
