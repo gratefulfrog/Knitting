@@ -3,6 +3,11 @@ import processing.serial.*;
 
 
 ////////////////////
+///  Screen type   - user adjustable variable
+boolean HiResScreen = false;
+////////////////////
+
+////////////////////
 /// ROWS TO KNIT Global variable
 int nbRowsToKnit = 5;
 ////////////////////
@@ -27,6 +32,7 @@ boolean homed= false,
         awayed = false,
         rightEnd = false,
         automatedKnittingInitialized = false,
+        waitingOnInitAuto = false,
         atEnd = false,
         nStepping = false;
         
@@ -49,13 +55,24 @@ int msgX[],
     posY = 0,
     cX = 400,
     cY = 20,
-    nbMsgs = 40;
+    nbMsgs = 0,
+    nbMsgsHiRes = 40,
+    nbMsgsLowRes = 20,       // This may need tweekding!
+    screenYHighRes =  850,
+    screenYLowRes = 450;  // This may need tweekding!
  
 boolean firstPass = true;
 //////////////////
 
-void setup() {  
-  size(640,850);
+void setup() { 
+ if( HiResScreen){
+    size(640,screenYHighRes);
+    nbMsgs = nbMsgsHiRes;
+ }
+ else{
+    size(640,screenYLowRes);
+    nbMsgs = nbMsgsLowRes;
+ }
   // set up the display
   initTextVecs(); 
 
@@ -86,6 +103,9 @@ void draw() {
     text(connectTex,cX,cY);
     // if automated stepping, i.e. automatically knitting rows, then take an nStep , 
     // i.e. increment the knitting loop
+    if(waitingOnInitAuto){
+      waitingOnInitAutomatedKnitting();
+    }
     if (nStepping){
       nStep();
     }

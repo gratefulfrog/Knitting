@@ -70,6 +70,12 @@ String KnitControl::run(char c) {
       processed = true;
       res = "Homed!";
       break;
+    case 'k':      // toggle FRONT servos
+    case 'K':
+      processed = true;
+      sm->setServos2Knit(dir);
+      res = String("Servos set to knit: ") + String(dir ? "LEFT" : "RIGHT");
+      break;
     case 'l':
     case 'L':     // take a step left
       processed = true;
@@ -85,7 +91,7 @@ String KnitControl::run(char c) {
     case 'p':    // display curren position
     case 'P':
       processed = true;
-      res = "Current Position: " + String(curPos);
+      res = "Current Position: " + String(curPos); // NOTE: the string 'Current' is parsed by Processing GUI, do not remove it!
       break;
     case 'r':     // take one step right
     case 'R':
@@ -204,7 +210,7 @@ String KnitControl::incKnit(){
       }
       else { // can't go left
         lastStepsToDo=stepsToDo = 0;
-        res = "LEFT Limit!";
+          res = "LEFT Limit!";   // NOTE: the string 'Limit!' is parsed by Processing GUI, do not remove it!
       }
     }
     else { // going right
@@ -215,7 +221,7 @@ String KnitControl::incKnit(){
       }
       else{
         lastStepsToDo=stepsToDo = 0;
-        res = "RIGHT Limit!";
+        res = "RIGHT Limit!";    // NOTE: the string 'Limit!' is parsed by Processing GUI, do not remove it!
       }
     }
   }

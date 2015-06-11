@@ -19,7 +19,10 @@ const int ServoMgr::inOutVec[][5] = {{servoT_in,
                                       servoFT_out,
                                       servoBT_out}};
                          
-    
+const int ServoMgr::dirKnittingServoVec[][2] = {{1,4},   // dir == LEFT
+                                                {2,3}};  // dir == RIGHT
+
+
 ServoMgr::ServoMgr(){
   stateVec = new bool[5];
   for (int i=0;i<5;i++){
@@ -35,7 +38,7 @@ ServoMgr::ServoMgr(){
   servoBB.attach(pinServoBB);   // servo in the back needle bed selecting needles
   servoBT.attach(pinServoBT);   // servo in the back needle bed stopping the loops rising up
   servoT.attach(pinServoT);  
-  // set all except to out,
+  // set all except T to out,
   for (int i=1;i<nbServos;i++){
     set(i,false);
   }
@@ -76,3 +79,12 @@ void ServoMgr::setFB(bool fb, int val){  // fb is true if front servos are to be
   }
 }  
 
+void ServoMgr::setServos2Knit(bool leftB){
+  // servo T should already be set!
+  for (int on  = (leftB ? 0 :1),
+           off = leftB ? 1 :0,
+           i=0;i<2;i++){
+    set(dirKnittingServoVec[on][i], true);
+    set(dirKnittingServoVec[off][i], false);
+           }
+}

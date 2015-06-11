@@ -23,9 +23,17 @@ void initKnitSequence(){
       goToEnd();
       rightEnd = true;
     }
-    myPort.write('b');  // toggle the back servos IN, since there will be a toggle at the knitRow command!
-    daly(commandDelay);
+    daly(commandDelay);  // at this point we are at RightEnd, with DIR set to RIGHT,
     automatedKnittingInitialized  = true;
+    waitingOnInitAuto = true;
+  }
+}
+
+void waitingOnInitAutomatedKnitting(){
+  if(atEnd){
+    waitingOnInitAuto = false;
+    myPort.write('k');  // set the servos to knit to the Right, since they will be toggled at the knitRow command!
+    daly(commandDelay);
   }
 }
 
@@ -68,16 +76,17 @@ void knitOneRow(){
     updateMesageDisplay("Please Initialize Automated Knitting (i) first!");
     return;
   }    
-  // from current position, which is an end:
-  // servos should be set from previous row and require toggling
-  toggleKnittingServos();
    if (rightEnd){
      setKnittingDir('l');
    }
    else {
      setKnittingDir('r');
    }
-   goToEnd();   
+  // from current position, which is an end, we have set the direction so we need to set the servos
+  // servos have been set from previous row and require toggling
+  toggleKnittingServos();
+  // we are now ready to knit one row!
+  goToEnd();   
 }
 
 

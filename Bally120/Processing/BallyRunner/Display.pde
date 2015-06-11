@@ -24,9 +24,6 @@ void updateMesageDisplay(String s){
     aWords[i] = aWords[i+1];
   }
   aWords[nbMsgs-1] = s;
-  if (s.indexOf("Limit!")>0){
-    atEnd = true;
-  }
 }
 
 // take incoming messages from the Arduino, do any parsing needed, and update the display texts
@@ -34,8 +31,11 @@ void processIncoming(String s){
   print(s);  // to the stdout window
   // check if it's a current position message and if so update the currentPos text
   updateMesageDisplay(s);
-  if (null != match(s,"Curr")) {
+  if (null != match(s,"Current")) {
     currentPos = s;
+  }
+  if (null != match(s,"Limit!")) {
+    atEnd = true;
   }
 }
 

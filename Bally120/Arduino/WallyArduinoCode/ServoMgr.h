@@ -32,7 +32,8 @@ class ServoMgr {
     
     // in is true
     bool* stateVec;
-    
+    static const int dirKnittingServoVec[][2];
+
   public:
     static const int nbServos = 5;
     static const int Toggle = -1,
@@ -43,11 +44,13 @@ class ServoMgr {
                      BB = 2,
                      FT = 3,
                      BT = 4;
+                     
     ServoMgr();
     String getStatus();
     void toggle (int servoIndex); 
     void set (int servoIndex, bool in);
     void setFB(bool fb, int val);  // sets front or back knitting, to Toggle, In or Out 
+    void setServos2Knit(bool leftB);
   
 };
 
