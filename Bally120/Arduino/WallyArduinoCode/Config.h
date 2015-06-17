@@ -23,11 +23,11 @@ const int   pinServoFB = 7,   // servo in the front needle bed selecting needles
 // These values were updated by Bob 2015 04 01 as a result of servo Callibration
 const int servoFB_out = 100;  // up
 const int servoFB_in = 75;    // down
-const int servoFT_in = 70;    // down
+const int servoFT_in = 80; // 70;    // down - value changed 2016 06 17
 const int servoFT_out = 110;  // up
 const int servoBB_out = 100;  // 140;  // up
 const int servoBB_in = 75;    // 80;   // down
-const int servoBT_in = 70;    // down
+const int servoBT_in = 80; // 70;    // down  - value changed 2016 06 17
 const int servoBT_out = 120;  // up
 const int servoT_in = 60;     //down
 const int servoT_out = 155;   // up

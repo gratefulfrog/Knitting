@@ -18,10 +18,18 @@ const int ServoMgr::inOutVec[][5] = {{servoT_in,
                                       servoBB_out,
                                       servoFT_out,
                                       servoBT_out}};
-                         
+
+// tells which servos on for a given direction of knitting:
+// dir = LEFT, then dirKnittingServoVec[0] are in and the others are out,
+// dir = RIGHT then dirKnittingServoVe[1]are in and the others are out,
+// changed 2015 06 17:
+/*
 const int ServoMgr::dirKnittingServoVec[][2] = {{1,4},   // dir == LEFT
                                                 {2,3}};  // dir == RIGHT
+*/
 
+const int ServoMgr::dirKnittingServoVec[][2] = {{1,3},   // dir == LEFT
+                                                {2,4}};  // dir == RIGHT
 
 ServoMgr::ServoMgr(){
   stateVec = new bool[5];
