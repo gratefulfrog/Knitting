@@ -52,6 +52,8 @@ void firstLoopSetup(){
     daly(leonardoResetDelay);
     updateMesageDisplay("Termporizing done!");
     println("Termporizing done!");
+    updateMesageDisplay("Type '?' for command summary!");
+    println("Type '?' for command summary!");
   }
   
 // local variabl just for printing

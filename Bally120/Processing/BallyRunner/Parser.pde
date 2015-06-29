@@ -63,6 +63,11 @@ void keyPressed() {
        knittingDir = 'R';
      }
   }
+  else if (key == '?'){
+    got = "?";
+    showHelp(helpStart);
+    helpStart = ! helpStart;
+  }
   println("Captured key: " + got);
 }
 

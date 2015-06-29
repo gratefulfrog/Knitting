@@ -61,7 +61,8 @@ int msgX[],
     screenYHighRes =  850,
     screenYLowRes = 450;  // This may need tweekding!
  
-boolean firstPass = true;
+boolean firstPass = true,
+        helpStart =  true;
 //////////////////
 
 void setup() { 
